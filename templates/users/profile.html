@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+ {%block title%}Profile {%endblock title%}
+{% block content %}
+
+
+<div class=" image d-flex flex-column justify-content-center align-items-center"> 
+    <button class="btn btn-secondary">
+      <h1>Welcome, {{ user.username }}!</h1>
+        <img src="{{user.profile_picture.url}} " class="profile_picture" alt="user.profile_picture">
+    </button> <span class="name mt-3">{{user.first_name}}  {{user.last_name}}</span> 
+    <span class="idd">@{{user.username}}</span>
+    <span class="idd">@{{user.email}}</span>
+ 
+          
+    <div class=" d-flex mt-2">
+         <button class="btn btn-dark"><a href="{% url 'profile_update'%}">Edit Profile</a> </button> 
+        </div> 
+    <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center">
+
+        <span class="join">Joined {{user.date_joined | date:"M d, Y" }}</span> 
+      </div> 
+    </div>
+
+  <div class="row">
+ <div class="col-6">    
+  
+  <h2>Your Friends:</h2>
+  {% for friend in friends %}
+    {% if  friend.receiver != request.user%}
+
+
+        <p><b>{{ friend.receiver.username }}</b></p>
+    
+      <form action="{% url 'unfriend' friend.receiver.id %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class='btn btn-outline-info'>unfriend</button>
+    </form>
+
+    {% elif friend.receiver == request.user %}
+    <p><b>{{ friend.sender.username }}</b></p>
+    <form action="{% url 'unfriend' friend.sender.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-info">unfriend</button>
+    </form>
+    {% endif %}
+  {% empty %}
+    <p>No friends yet.</p>
+  {% endfor %}
+
+  <h2>Friend Requests:</h2>
+  {% for request in friend_requests %}
+    <p>{{ request.sender.username }} sent you a friend request.</p>
+    <form method="POST" action="{% url 'accept_friend_request' request.id %}">
+      {% csrf_token %}
+      <button type="submit">Accept</button>
+    </form>
+    <form method="POST" action="{% url 'reject_friend_request' request.id %}">
+      {% csrf_token %}
+      <button type="submit" class='btn'>Reject</button>
+    </form>
+  {% empty %}
+    <p>No friend requests.</p>
+  {% endfor %}</div>
+
+ <div class="col-6">
+  <h1>You may also know this users: </h1>
+    {% for unfriend in non_friends %}
+      {% if unfriend != request.user %}
+    <form action="{% url 'send_friend_request' unfriend.id %}" method="POST">
+      {% csrf_token %}
+      {{unfriend.username}} 
+      <button type="submit" class="btn btn-outline-primary">Send request</button><br><br>
+    </form> 
+    {% endif %}
+    
+    {% endfor %}
+  </div>
+
+  
+  </div>
+  
+  
+
+
+
+
+        <h1>Your Friends</h1>
+    <ul>
+        {% for friend in user.sent_friendships.to_user.all %}
+            <li>
+                {% comment %} <a href="{% url 'accept_friend_request' friendship.id %}">Accept</a>
+                <a href="{% url 'reject_friend_request' friendship.id %}">Reject</a> {% endcomment %}
+                {{ friend.username }}</li>
+        {% endfor %}
+
+    </ul>
+
+
+
+{% endblock content %}

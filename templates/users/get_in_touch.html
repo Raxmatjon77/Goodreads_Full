@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{{user.username}}{% endblock title %}
+  {% block content %}
+
+<h1>Welcome, {{ user.username }} page !</h1>
+  
+  <h2>Your Friends:</h2>
+  {% for friend in friends %}
+    {% if  user != friend.receiver %}
+    <p>{{ friend.receiver.username }}</p>
+    {% else %}
+    <p>{{ friend.sender.username }}</p>
+    {% endif %}
+  {% empty %}
+    <p>No friends yet.</p>
+  {% endfor %}
+  
+  
+  
+  <p>sent {{ user.username}}  a friend request.</p>
+    <form method="POST" action="{% url 'send_friend_request' user.id %}">
+      {% csrf_token %}
+      <button type="submit">send</button>
+    </form>
+
+  
+  {% endblock content %}
+
+
+

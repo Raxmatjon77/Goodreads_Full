@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+ {%block title%}Landing Page {%endblock title%}
+{% block content %}
+<h1> django</h1>
+<h1>Welcome to Goodreads Library</h1>
+<p>This is a project to create a library of books that have been read by Goodreads users.</p>
+<p>You can browse the library by genre, author, or title.</p>
+<p>You can also add books to the library by entering their ISBN numbers.</p>
+<img src="{{ book_image }}" alt="Book cover">
+<a href="/books/">View the library</a>
+
+{%endblock content%}

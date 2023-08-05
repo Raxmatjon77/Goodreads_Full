@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} {{author.full_name}}  {% endblock title %}
+
+{% block content %}
+
+
+
+<div class="continer">
+    <div class="row">
+        <div class="col-md-3 col-3"> 
+            <h4>{{author.full_name}} Page:</h4>
+            <p>Author: {{author.first_name}}</div></p>
+    </div>
+</div>
+<div class="row">
+    <div class="offset-3 col-9">
+        <div class="card mb-3 " style="max-width:30rem;">
+            <div class="row g-3">
+              <div class="col-12">
+                <img src="{{author.author_cover_picture.url}}" class="img-fluid rounded-start"; alt="..." >
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title ">About the author:</h5>
+                  <p class="card-text">First Name: <b>{{author.first_name}}</b></p>
+                  <p class="card-text">Last Name:  <b>{{author.last_name}}</b></p>
+                  <p class="card-text">Email: <b>{{author.email}}</b></p>
+                  <p class="card-text">Bio:  <b>{{author.bio}}</b></p>
+                  <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+{% endblock content %}
