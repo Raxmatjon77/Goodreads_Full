@@ -1,12 +1,35 @@
 {% extends "base.html" %}
  {%block title%}Landing Page {%endblock title%}
 {% block content %}
-<h1> django</h1>
-<h1>Welcome to Goodreads Library</h1>
-<p>This is a project to create a library of books that have been read by Goodreads users.</p>
-<p>You can browse the library by genre, author, or title.</p>
-<p>You can also add books to the library by entering their ISBN numbers.</p>
-<img src="{{ book_image }}" alt="Book cover">
-<a href="/books/">View the library</a>
+<div class="landin mx-auto row">
+    <div class="col text-center">
+
+
+        <h1>Welcome to Goodreads Library</h1>
+        <h4 class='text-danger'> Iltimos , saytdan to'laqonli foydalanish uchun ro'yxatdan o'ting !</h4>
+        <p>This is a project to create a library of books that have been read by Goodreads users.</p>
+        <p>You can browse the library by genre, author, or title.</p>
+        <p>You can also add books to the library by entering their ISBN numbers.</p>
+        <div class="center">
+            <img src="{{books.cover_picture.url}}" alt="swadf">
+        </div>
+        
+      
+        <h4 class="display-5">About the developer:</h4>
+    
+        <p>First Name : <b>Raxmatjon</b></p>
+        <p>Last Name : <b>Hamidov</b></p>
+        <p>Email : <b><a href="https://raxmatjonhamidov242@gmail.com">raxmatjonhamidov242@gmail.com</a></b></p>
+        <p> telegram : <b><a href="https://t.me/Rakhmatjon_0525">https://t.me/Rakhmatjon_0525</a></b></p>
+        <p>LinkedIn: <b><a href="https://www.linkedin.com/in/raxmatjon-hamidov/">https://www.linkedin.com/in/raxmatjon-hamidov/</a></b></p>
+        <p>Instagram : <b><a href="https://instagram/raxmatjon_77_15">https://instagram/raxmatjon-hamidov</a></b></p>
+    
+    </div>
+
+    </div>
+   
+
+
+
 
 {%endblock content%}

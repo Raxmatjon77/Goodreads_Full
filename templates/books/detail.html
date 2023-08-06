@@ -39,28 +39,7 @@
 
 </div>
 
-{% comment %} <div class="row mb-4">
-  <div class="col-2 ms-4">
-    <img src="{{book.cover_picture.url}}" alt="cover" class="cover_pic" />
-  </div>
-  <div class="col-6 ms-4">
-    <h3>{{book.title}}</h3>
 
-    <span class="fst-italic">
-      Aythored by {% if forloop.last%}
-      {% for book_author in book.bookauthor_set.all %}
-       <a href="{% url 'author_detail' book_author.id %}">{{book_author.author.full_name}}</a> 
-      
-       {% endfor %}
-      {% else %} 
-      {% for book_author in book.bookauthor_set.all %}
-      <a href="{% url 'author_detail' book_author.id %}">{{book_author.author.full_name}},</a>
-       {% endfor %} 
-       {% endif %}
-    </span>
-    <p class="fs-5">{{book.description}}</p>
-  </div>
-</div> {% endcomment %}
 <div class="row mb-4">
   <div class="col-7">
     <form method="post" action="{% url 'reviews' book.id %}">
@@ -74,30 +53,35 @@
 
 <h4>Reviews:</h4>
 <hr>
-{% for review in book.bookreview_set.all%}
-<div class="container">
-  <div class="row mb-3">
-    <div class="col-1 me-2">
-      <img
-        class="small_profile_pic"
-        src="{{ review.user.profile_picture.url}}"
-        alt="picture"
-      >
-    </div>
-    <div class="col-7 ms-3">
-      <b>{{review.user.username}}</b> rated it {{review.stars_given}} stars
-      <span class="fw-lighter">{{review.created_at}}</span>
 
-      {% if review.user == request.user %}
+
+{% for review in book.bookreview_set.all%}
+
+
+  
+
+
+
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{ review.user.profile_picture.url}}" class="img-fluid rounded-start" alt="..." style="width:100%">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <p><b>{{review.user.username}}</b> rated it {{review.stars_given}} stars </p>  <span class="fw-lighter">{{review.created_at}}</span>
+          {% if review.user == request.user %}
       <a href="{% url 'edit_review' book.id review.id %}"><i class="bi bi-pencil"></i></a>
       <a href="{% url 'delete_confirm' book.id review.id %}"> <i class="bi bi-trash3"></i></a>
 
       {% endif %}
-
-      <p class="mt-2 font-monospace">{{review.comment}}</p>
+          <p class="mt-2 font-monospace">{{review.comment}}</p>
+          
+        </div>
+      </div>
     </div>
   </div>
-</div>
+
 {% endfor %}
  {% endif %}
   {% endblock %}

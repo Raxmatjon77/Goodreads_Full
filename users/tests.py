@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
-from .models import CustomUser
+from .models import CustomUser,Friendship
 
 # Create your tests here.
 class RegistrationTestCase(TestCase):
@@ -142,3 +142,26 @@ class ProfileTestCase(TestCase):
         self.assertEqual(user.last_name,'lastname')
         self.assertEqual(response.url,reverse('profile'))
         
+class TestFriendships(TestCase):
+    
+    def setUp(self):
+       self.user=CustomUser.objects.create(username='raxmatjon',email='email@mail.ru')
+       self.user.set_password('somepassword')
+       self.user.save()
+       self.user1=CustomUser.objects.create(username='raxmatjon1',email='email@mail.ru')
+       self.user1.set_password('somepassword')
+       self.user1.save()
+    def test_create_friendship(self):
+        
+       friendship=Friendship.objects.create(sender=self.user,receiver=self.user1,status='accepted')
+       self.client.login(username='raxmatjon',password='somepassword')
+       response=self.client.get(reverse('profile'))
+       self.assertContains(response,friendship.receiver.username)
+       self.assertContains(response,friendship.receiver.email)
+       
+    def test_no_friends_and_requests(self):
+        
+        self.client.login(username='raxmatjon',password='somepassword')
+        response=self.client.get(reverse('profile'))
+        self.assertContains(response,'No friends yet')
+        self.assertContains(response,'No friend requests')

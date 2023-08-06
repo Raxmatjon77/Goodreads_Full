@@ -21,79 +21,185 @@
       </div> 
     </div>
 
+
   <div class="row">
- <div class="col-6">    
-  
-  <h2>Your Friends:</h2>
-  {% for friend in friends %}
-    {% if  friend.receiver != request.user%}
+        <div class="col-md-6  col-12">    
 
+          <h2>Your Friends:</h2>
+            {% for friend in friends %}
+                  {% if  friend.receiver != request.user%}
+              <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="{{friend.receiver.profile_picture.url}}" class="img-fluid rounded-start profile_picture" alt="...">
+                   </div>
+                  <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title"> <b>{{ friend.receiver.username }}</b></h5>
+                    <p class="card-text"><b>{{friend.receiver.email}}</b></p>
+                    <p class="card-text">
+                      <small class="text-body-secondary">
+                    <form action="{% url 'unfriend' friend.receiver.id %}" method="post">
+                      {% csrf_token %}
+                        <button type="submit" class="btn btn-info">unfriend</button>
+                    </form>
+                    </small></p>
+                        </div>
+              </div>
+             </div>
+           </div>
 
-        <p><b>{{ friend.receiver.username }}</b></p>
-    
-      <form action="{% url 'unfriend' friend.receiver.id %}" method="POST">
-      {% csrf_token %}
-      <button type="submit" class='btn btn-outline-info'>unfriend</button>
-    </form>
+  {% elif friend.receiver == request.user %}
 
-    {% elif friend.receiver == request.user %}
-    <p><b>{{ friend.sender.username }}</b></p>
-    <form action="{% url 'unfriend' friend.sender.id %}" method="post">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-outline-info">unfriend</button>
-    </form>
-    {% endif %}
-  {% empty %}
-    <p>No friends yet.</p>
+  <div class="card mb-3" style="max-widh: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{friend.sender.profile_picture.url}}" class="img-fluid rounded-start" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"> <b>{{ friend.sender.username }}</b></h5>
+          <p class="card-text"><b>{{friend.sender.email}}</b></p>
+          <p class="card-text"><small class="text-body-secondary">
+            <form action="{% url 'unfriend' friend.sender.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-info">unfriend</button>
+            </form>
+          </small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+        {% empty %}
+         <p>No friends yet.</p>
   {% endfor %}
+</div>
 
-  <h2>Friend Requests:</h2>
-  {% for request in friend_requests %}
-    <p>{{ request.sender.username }} sent you a friend request.</p>
-    <form method="POST" action="{% url 'accept_friend_request' request.id %}">
-      {% csrf_token %}
-      <button type="submit">Accept</button>
-    </form>
-    <form method="POST" action="{% url 'reject_friend_request' request.id %}">
-      {% csrf_token %}
-      <button type="submit" class='btn'>Reject</button>
-    </form>
-  {% empty %}
-    <p>No friend requests.</p>
-  {% endfor %}</div>
 
- <div class="col-6">
-  <h1>You may also know this users: </h1>
-    {% for unfriend in non_friends %}
-      {% if unfriend != request.user %}
-    <form action="{% url 'send_friend_request' unfriend.id %}" method="POST">
-      {% csrf_token %}
-      {{unfriend.username}} 
-      <button type="submit" class="btn btn-outline-primary">Send request</button><br><br>
-    </form> 
+<div class="col-md-6 col-12">
+  {% if  non_friends %}
+  <h1>People you may know: </h1>
+  {% for unfriend in non_friends %}
+  {% if unfriend != request.user %}
+
+  <div class="card mb-3" style="max-widh: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{unfriend.profile_picture.url}}" class="img-fluid rounded-start" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"> <b>{{ unfriend.username }}</b></h5>
+          <p class="card-text"><b>{{unfriend.email}}</b></p>
+          <p class="card-text"><small class="text-body-secondary">
+            <form action="{% url 'send_friend_request' unfriend.id %}" method="POST">
+              {% csrf_token %}
+              
+              <button type="submit" class="btn btn-primary">Send request</button><br><br>
+            </form> 
+          </small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
     {% endif %}
     
     {% endfor %}
+    {% endif %}
+
+  </div>
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-md-6">
+        
+  <h2>Friend Requests:</h2>
+  {% for request in friend_requests %}
+
+
+
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{request.sender.profile_picture.url}}" class="img-fluid rounded-start" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"> <b>{{ request.sender.username }}</b></h5>
+          <p class="card-text"><b>{{request.sender.email}}</b></p>
+          <p class="card-text"><small class="text-body-secondary">
+
+
+            <form action="{% url 'accept_friend_request' request.id %}" method="POST">
+              {% csrf_token %}
+              
+              <button type="submit" class="btn btn-primary">Accept</button><br><br>
+            </form> 
+            <form method="POST" action="{% url 'reject_friend_request' request.id %}">
+              {% csrf_token %}
+              <button type="submit" class='btn btn-danger'>Reject</button>
+            </form>
+
+          </small></p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  
-  </div>
-  
-  
-
-
-
-
-        <h1>Your Friends</h1>
-    <ul>
-        {% for friend in user.sent_friendships.to_user.all %}
-            <li>
-                {% comment %} <a href="{% url 'accept_friend_request' friendship.id %}">Accept</a>
-                <a href="{% url 'reject_friend_request' friendship.id %}">Reject</a> {% endcomment %}
-                {{ friend.username }}</li>
+  {% empty %}
+    <p>No friend requests.</p>
+  {% endfor %}</div>
+ 
+  <div class="col-md-6 col-12">
+    <h2>
+      Requests you sent:
+    </h2>
+       
+        {% for request in sent_requests %}
+        
+        <div class="card mb-3" style="max-widh: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="{{request.receiver.profile_picture.url}}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title"> <b>{{ request.receiver.username }}</b></h5>
+                <p class="card-text"><b>{{request.receiver.email}}</b></p>
+                <p class="card-text"><small class="text-body-secondary">
+                  <form action="{% url 'unfriend' request.receiver.id %}" method="POST">
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="btn btn-danger">Unsend</button><br><br>
+                  </form> 
+                </small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        
+        
+        
         {% endfor %}
+  </div>
+</div>
 
-    </ul>
+
+
+
+
+
+  
+  
 
 
 

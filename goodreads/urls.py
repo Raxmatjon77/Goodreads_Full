@@ -17,17 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.conf.urls.static import static
-from goodreads.views import landing_page,home_page
+from goodreads.views import landingPageView,home_page
 from django.conf import settings
 urlpatterns = [
-    path('',landing_page,name='landing_page'),
+    path('',landingPageView.as_view(),name='landing_page'),
     path("home/", home_page, name="home_page"),
     path('users/',include('users.urls')),
     path('admin/', admin.site.urls),
     path('books/',include('books.urls')),
     path('api/',include('api.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('friends/',include('friendships.urls')),
+    
 
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

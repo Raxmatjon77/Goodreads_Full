@@ -16,17 +16,19 @@ from django.db.models import Q
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
-        sent_requests=user.friendship_sent.filter(sender=user,status='accepted')[:]
-        received_requests=user.friendship_received.filter(receiver=user,status='accepted')[:]
+        sent_requests=user.sent_friendships.filter(sender=user,status='accepted')[:]
+        received_requests=user.received_friendships.filter(receiver=user,status='accepted')[:]
         friends =sent_requests.union(received_requests)
-        friend_requests=user.friendship_received.filter(receiver=user,status='pending')[:]
-        non_friends = CustomUser.objects.exclude(Q(friendship_sent__receiver=user) |Q(friendship_received__sender=user)
+        friend_requests=user.received_friendships.filter(receiver=user,status='pending')[:]
+        sent_friend_requests=user.sent_friendships.filter(sender=user,status='pending')
+        non_friends = CustomUser.objects.exclude(Q(sent_friendships__receiver=user) |Q(received_friendships__sender=user)
         ).order_by('-date_joined')[:10]
         context = {
             'user': user,
             'friends': friends,
             'friend_requests':friend_requests,
-            'non_friends':non_friends
+            'non_friends':non_friends,
+            'sent_requests':sent_friend_requests
     }
         return render(request, 'users/profile.html', context)
 
