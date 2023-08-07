@@ -79,21 +79,12 @@ WSGI_APPLICATION = 'goodreads.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'HOST':env('HOST'),
-        'PORT':'5432',
-        'USER':env('USER'),
-        'PASSWORD':env('PASSWORD'),
-    }
-}
 
-# import dj_database_url
-# DATABASES={
-#     'default':dj_database_url.parse(env('DATABASE_URL'))
-# }
+
+import dj_database_url
+DATABASES={
+    'default':dj_database_url.parse(env('DATABASE_URL'))
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
