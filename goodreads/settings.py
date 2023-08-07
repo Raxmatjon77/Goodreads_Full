@@ -22,6 +22,7 @@ env = environ.Env(
 )
 
 DEBUG=env('DEBUG')
+DEBUG=True
 ALLOWED_HOSTS = ['*']
 
 SECRET_KEY = env('SECRET_KEY')
@@ -79,21 +80,21 @@ WSGI_APPLICATION = 'goodreads.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'HOST':env('HOST'),
-        'PORT':'5432',
-        'USER':env('USER'),
-        'PASSWORD':env('PASSWORD'),
-    }
-}
-
-# import dj_database_url
-# DATABASES={
-#     'default':dj_database_url.parse(env('DATABASE_URL'))
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('DB_NAME'),
+#         'HOST':env('HOST'),
+#         'PORT':'5432',
+#         'USER':env('USER'),
+#         'PASSWORD':env('PASSWORD'),
+#     }
 # }
+
+import dj_database_url
+DATABASES={
+    'default':dj_database_url.parse(env('DATABASE_URL'))
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -134,6 +135,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS=[
     BASE_DIR/'static'
 ]
+STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
