@@ -8,7 +8,7 @@ from django.views import View
  
 class landingPageView(View):
     def get(self,request):
-        recommended_books=Book.objects.all()[0]
+        recommended_books=Book.objects.all()
         context={
             'books':recommended_books
         }
